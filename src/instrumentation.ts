@@ -8,7 +8,6 @@ export function register() {
       process.env.APP_ENV ??
       process.env.NODE_ENV ??
       "unknown",
-    nodeVersion: process.version,
     timestamp: new Date().toISOString(),
   });
 }

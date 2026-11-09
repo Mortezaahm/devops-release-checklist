@@ -1,6 +1,8 @@
-export const runtime = "nodejs";
+import { connection } from "next/server";
 
 export async function GET() {
+    await connection();
+
   const environment =
     process.env.APP_ENV ??
     process.env.NODE_ENV ??

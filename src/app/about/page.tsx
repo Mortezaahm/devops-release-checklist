@@ -1,13 +1,22 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { connection } from "next/server";
 
-export default async function AboutPage() {
-  // Read runtime environment variables on the server
+async function RuntimeEnvironment() {
   await connection();
   const environment =
     process.env.APP_ENV ??
     process.env.NODE_ENV ??
     "unknown";
+
+  return (
+    <span className="mt-2 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+      {environment}
+    </span>
+  );
+}
+
+export default function AboutPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
       <section className="max-w-3xl">
@@ -56,9 +65,15 @@ export default async function AboutPage() {
               <p className="text-xs text-slate-500">
                 Environment
               </p>
-              <span className="mt-2 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
-                {environment}
-              </span>
+              <Suspense
+                fallback={
+                  <span className="mt-2 text-xs text-slate-400">
+                    Loading environment...
+                  </span>
+                }
+              >
+                <RuntimeEnvironment />
+              </Suspense>
             </div>
             <div>
               <p className="text-xs text-slate-500">
