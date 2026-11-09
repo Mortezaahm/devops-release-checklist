@@ -2,17 +2,39 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { connection } from "next/server";
 
+import { getRuntimeConfig } from "@/lib/config";
+
 async function RuntimeEnvironment() {
   await connection();
-  const environment =
-    process.env.APP_ENV ??
-    process.env.NODE_ENV ??
-    "unknown";
+  const config = getRuntimeConfig();
 
   return (
-    <span className="mt-2 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
-      {environment}
-    </span>
+     <div className="mt-5 space-y-4">
+      <div>
+        <p className="text-xs text-slate-500">
+          Application
+        </p>
+        <p className="mt-1 text-sm font-semibold text-slate-900">
+          {config.appName}
+        </p>
+      </div>
+      <div>
+        <p className="text-xs text-slate-500">
+          Environment
+        </p>
+        <span className="mt-2 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+          {config.environment}
+        </span>
+      </div>
+      <div>
+        <p className="text-xs text-slate-500">
+          Rendering
+        </p>
+        <p className="mt-1 text-sm font-semibold text-slate-900">
+          Server Component
+        </p>
+      </div>
+    </div>
   );
 }
 

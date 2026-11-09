@@ -1,20 +1,28 @@
 import { connection } from "next/server";
 
+import { getRuntimeConfig } from "@/lib/config";
+
 export async function GET() {
     await connection();
 
-  const environment =
-    process.env.APP_ENV ??
-    process.env.NODE_ENV ??
-    "unknown";
+    const config = getRuntimeConfig();
+
   const healthData = {
     status: "ok",
-    service: "devops-release-checklist",
-    environment,
+    service: config.appName,
+    environment: config.environment,
     timestamp: new Date().toISOString(),
     uptimeSeconds: Math.floor(process.uptime()),
   };
+  console.info("[health] Health check requested", {
+    environment: config.environment,
+    timeStamp: healthData.timestamp,
+  });
+
   return Response.json(healthData, {
     status: 200,
+    headers: {
+        "Cache-Control": "no-store, max-age=0",
+    },
   });
 }
