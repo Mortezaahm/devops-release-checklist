@@ -115,7 +115,7 @@ export function ChecklistDashboard() {
             Deployment workspace
           </p>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Release checklist
+            Production Release Checklist
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-6 text-slate-500">
             Track your deployment tasks and make sure everything is
