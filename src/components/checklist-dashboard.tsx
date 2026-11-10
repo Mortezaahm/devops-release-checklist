@@ -14,37 +14,34 @@ import { ChecklistItem } from "./checklist-item";
 const STORAGE_KEY = "devops-release-checklist:v1";
 
 export function ChecklistDashboard() {
-  const [tasks, setTasks] = useState<ChecklistTask[]>(
-    DEFAULT_TASKS
-  );
-  const [newTask, setNewTask] = useState("");
-  const [isReady, setIsReady] = useState(false);
+  const [tasks, setTasks] = useState<ChecklistTask[]>(() => {
+    if (typeof window === "undefined") {
+      return DEFAULT_TASKS;
+    }
 
-  // Load saved tasks from localStorage
-  useEffect(() => {
     try {
       const savedTasks = window.localStorage.getItem(STORAGE_KEY);
 
-      if (savedTasks) {
-        const parsedTasks: unknown = JSON.parse(savedTasks);
-
-        if (Array.isArray(parsedTasks)) {
-          setTasks(parsedTasks.filter(isChecklistTask));
-        }
+      if (!savedTasks) {
+        return DEFAULT_TASKS;
       }
+
+      const parsedTasks: unknown = JSON.parse(savedTasks);
+
+      if (!Array.isArray(parsedTasks)) {
+        return DEFAULT_TASKS;
+      }
+
+      return parsedTasks.filter(isChecklistTask);
     } catch (error) {
       console.error("[storage] Failed to load checklist", error);
-    } finally {
-      setIsReady(true);
+      return DEFAULT_TASKS;
     }
-  }, []);
+  });
+  const [newTask, setNewTask] = useState("");
 
   // Save tasks whenever the list changes
   useEffect(() => {
-    if (!isReady) {
-      return;
-    }
-
     try {
       window.localStorage.setItem(
         STORAGE_KEY,
@@ -53,7 +50,7 @@ export function ChecklistDashboard() {
     } catch (error) {
       console.error("[storage] Failed to save checklist", error);
     }
-  }, [tasks, isReady]);
+  }, [tasks]);
 
   // Calculate dashboard statistics
   const completedCount = tasks.filter(
@@ -202,11 +199,7 @@ export function ChecklistDashboard() {
             </button>
           </form>
 
-          {!isReady ? (
-            <p className="py-8 text-center text-sm text-slate-500">
-              Loading checklist...
-            </p>
-          ) : tasks.length === 0 ? (
+          {tasks.length === 0 ? (
             <div className="rounded-xl border border-dashed border-slate-300 py-12 text-center">
               <p className="font-semibold text-slate-700">
                 No tasks yet.
@@ -228,9 +221,7 @@ export function ChecklistDashboard() {
             </ul>
           )}
           <p className="mt-5 text-xs text-slate-400">
-            {isReady
-              ? "Your checklist is saved in this browser."
-              : "Preparing local storage..."}
+            Your checklist is saved in this browser.
           </p>
         </div>
 
