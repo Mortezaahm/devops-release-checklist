@@ -1,0 +1,32 @@
+
+# Dependencies installed on the host
+node_modules
+
+# Next.js build output
+.next
+out
+
+# Git and CI configuration
+.git
+.github
+
+# Editor configuration
+.vscode
+.idea
+
+# Environment files and secrets
+.env*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Operating system files
+.DS_Store
+
+# Deployment and test artifacts
+.vercel
+coverage
+
+# TypeScript build cache
+*.tsbuildinfo
