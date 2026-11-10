@@ -4,12 +4,13 @@ import { connection } from "next/server";
 
 import { getRuntimeConfig } from "@/lib/config";
 
-async function RuntimeEnvironment() {
+
+async function RuntimeInformation() {
   await connection();
   const config = getRuntimeConfig();
 
   return (
-     <div className="mt-5 space-y-4">
+    <div className="mt-5 space-y-4">
       <div>
         <p className="text-xs text-slate-500">
           Application
@@ -74,38 +75,16 @@ export default function AboutPage() {
           <h2 className="text-lg font-bold text-slate-900">
             Runtime information
           </h2>
-          <div className="mt-5 space-y-4">
-            <div>
-              <p className="text-xs text-slate-500">
-                Application
+
+          <Suspense
+            fallback={
+              <p className="mt-5 text-sm text-slate-400">
+                Loading runtime information...
               </p>
-              <p className="mt-1 text-sm font-semibold text-slate-900">
-                DevOps Release Checklist
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">
-                Environment
-              </p>
-              <Suspense
-                fallback={
-                  <span className="mt-2 text-xs text-slate-400">
-                    Loading environment...
-                  </span>
-                }
-              >
-                <RuntimeEnvironment />
-              </Suspense>
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">
-                Rendering
-              </p>
-              <p className="mt-1 text-sm font-semibold text-slate-900">
-                Server Component
-              </p>
-            </div>
-          </div>
+            }
+          >
+            <RuntimeInformation />
+          </Suspense>
         </article>
       </section>
 
