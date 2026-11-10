@@ -34,3 +34,18 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+### Production Environment Configuration
+
+The production environment is configured through Render environment variables.
+
+| Variable | Production value         | Purpose                               |
+| -------- | ------------------------ | ------------------------------------- |
+| APP_ENV  | production               | Identifies the production environment |
+| APP_NAME | DevOps Release Checklist | Defines the application name          |
+
+These variables are configured in the Render Dashboard and injected into the Docker container at runtime.
+
+They are not hardcoded in the application source code.
+
+This allows the same Docker image to run with different environment configurations without rebuilding the application specifically for each environment.
